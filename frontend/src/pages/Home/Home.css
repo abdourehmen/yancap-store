@@ -1,0 +1,148 @@
+.home-page {
+  background-color: #000000; /* خلفية سوداء كاملة وفخمة للموقع */
+  min-height: 100vh;
+  color: #ffffff; /* النصوص الأساسية باللون الأبيض البارز */
+  padding-top: 90px;
+  
+  /* أنيميشن فتح واضح وقوي لصفحة الهوم بالكامل عند الدخول للموقع */
+  animation: homeEntranceClear 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes homeEntranceClear {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.products-section {
+  padding: 6rem 2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  background-color: #000000; /* تأكيد أن قسم المنتجات ذو خلفية سوداء متناسقة */
+}
+
+.section-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08); /* شارة بخلفية داكنة شفافة وفخمة */
+  color: #ffffff; /* نص أبيض صريح */
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff; /* عنوان أبيض بارز وقوي على الخلفية السوداء */
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: #aaaaaa; /* رمادي فاتح مريح للقراءة على الخلفية السوداء */
+  line-height: 1.6;
+}
+
+/* تخطيط شبكة المنتجات المحسن */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2.5rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding-top: 80px;
+  }
+  .products-section {
+    padding: 3.5rem 1rem;
+  }
+  .section-title {
+    font-size: 1.85rem;
+  }
+  .products-grid {
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+/* ==========================================================
+   تنسيق الشريط المتحرك (Marquee) المضاف في الفراغ فوق قسم الأكثر طلباً
+   ========================================================== */
+
+
+.space-marquee-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: #000000; /* نفس لون خلفية الموقع السوداء تماماً ليتلصق معها */
+  border: none;        /* إزالة أي حدود أو خطوط */
+  padding: 1.5rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  margin-top: 0;       /* إلغاء أي مسافة علوية ليلتصق مباشرة بالهيرو */
+  margin-bottom: 0;    /* إلغاء أي مسافة سفلية ليلتصق بقسم المنتجات */
+}
+
+.space-marquee-track {
+  display: inline-flex;
+  gap: 6rem;
+  align-items: center;
+  animation: spaceMarqueeMove 25s linear infinite;
+}
+
+.space-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* تنسيق الأيقونة داخل الدائرة البيضاء */
+.marquee-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+@keyframes spaceMarqueeMove {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}

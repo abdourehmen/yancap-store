@@ -1,1 +1,11 @@
-"node_modules\n.DS_Store\ndist\n.env" 
+# المفاتيح والإعدادات الخاصة
+.env
+.env.local
+.env.*.local
+
+# ملفات تُنشأ تلقائيًا
+node_modules
+dist
+*.log
+.vercel
+.DS_Store

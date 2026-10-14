@@ -1,0 +1,276 @@
+/* أنيميشن فتح الموقع أو ظهور الكاردات بوعي وسلاسة */
+@keyframes siteOpenFade {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.streetflex-product-card {
+  animation: siteOpenFade 0.8s ease-out forwards;
+}
+
+.streetflex-product-card {
+  background-color: #ffffff; /* خلفية بيضاء صافية ونظيفة للبطاقة */
+  border: 1px solid rgba(0, 0, 0, 0.08); /* إطار أسود خفيف ونظيف */
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+.streetflex-product-card:hover {
+  transform: translateY(-5px);
+  border-color: #000000; /* إطار أسود كامل وواضح عند التحويم */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background-color: #f7f7f7; /* خلفية خفيفة جداً تحت الصورة */
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.streetflex-product-card:hover .product-image {
+  transform: scale(1.08);
+}
+
+.product-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #000000; /* شارة سوداء صريحة وبارزة */
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.product-overlay-actions {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 5;
+}
+
+.streetflex-product-card:hover .product-overlay-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.overlay-btn:hover {
+  background: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.product-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-category {
+  font-size: 0.75rem;
+  color: #666666; /* رمادي مريح للفئة */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.product-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #000000; /* عنوان أسود صريح وواضح */
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* مؤشر المخزون المضاف */
+.product-stock-indicator {
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.product-stock-indicator.in-stock {
+  color: #000000; /* أخضر واضح ومقروء للمتوفر */
+}
+
+.product-stock-indicator.out-of-stock {
+  color: #c62828; /* أحمر واضح لنفاد الكمية */
+}
+
+.product-description {
+  font-size: 0.85rem;
+  color: #555555; /* رمادي داكن مريح للقراءة */
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.product-price-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-current-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #000000; /* السعر بالأسود البارز */
+}
+
+.product-current-price small {
+  font-size: 0.75rem;
+  color: #666666;
+}
+
+.product-old-price {
+  font-size: 0.75rem;
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.add-to-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #000000; /* زر إضافة للسلة باللون الأسود الفخم */
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.buy-now-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #000000; /* زر إضافة للسلة باللون الأسود الفخم */
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+/* أزرار التنقل بالأسهم داخل كارت المنتج */
+.card-gallery-arrow {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  color: #000000 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  z-index: 10 !important;
+  opacity: 0.8 !important;
+}
+
+.product-image-container:hover .card-gallery-arrow {
+  opacity: 1 !important;
+}
+
+.card-gallery-arrow:hover {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.card-prev-arrow {
+  left: 10px !important;
+}
+
+.card-next-arrow {
+  right: 10px !important;
+}
+
+/* أنيميشن نزول وظهور تلقائي مباشر لكل كارد عند ظهوره في الصفحة */
+.streetflex-product-card {
+  animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

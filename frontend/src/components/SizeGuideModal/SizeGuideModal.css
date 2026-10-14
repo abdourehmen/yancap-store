@@ -1,0 +1,177 @@
+.size-guide-trigger-btn {
+  background: none;
+  border: none;
+  color: #ffffff; /* لون أبيض نقي وواضح متناسق مع الثيم الفخم */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.size-guide-trigger-btn:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* Modal Overlay */
+.size-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); /* خلفية سوداء شفافة فخمة */
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+/* Modal Content */
+.size-modal-content {
+  background: #111111; /* خلفية النافذة سوداء داكنة وراقية */
+  color: #ffffff;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.size-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.size-modal-close:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.size-modal-header h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.size-modal-header p {
+  color: #cccccc;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.measurement-steps-section h3,
+.size-chart-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.5rem;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-card {
+  background: #1a1a1a; /* لون رمادي داكن فخم لبطاقات الخطوات */
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+}
+
+.step-number {
+  display: inline-block;
+  background: #ffffff; /* رقم الخطوة بالأبيض البارز */
+  color: #000000;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.step-card p {
+  font-size: 0.85rem;
+  color: #cccccc;
+  margin: 0;
+}
+
+/* Table Styling */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.size-table th, .size-table td {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px;
+}
+
+.size-table th {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.size-table td {
+  background: #141414;
+  color: #ffffff;
+}
+
+.size-modal-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.size-modal-ok-btn {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.size-modal-ok-btn:hover {
+  background: #e0e0e0;
+}

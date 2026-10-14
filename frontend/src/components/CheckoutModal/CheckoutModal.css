@@ -1,0 +1,234 @@
+/* طبقة التعتيم الخلفية (Overlay) */
+.checkout-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8); /* تعتيم أسود فخم */
+  backdrop-filter: blur(5px); /* تأثير ضبابي خفيف خلف النافذة */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999; /* 🚀 اجعلها أقيم وأعلى قيمة لتكون فوق الـ Navbar والشاشات كلها */
+  padding: 16px;
+}
+
+/* نافذة ملء المعلومات الرئيسية */
+.checkout-modal {
+  background-color: #111111; /* خلفية النافذة سوداء داكنة وراقية */
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+  position: relative;
+  z-index: 100000; /* محتوى النافذة فوق الـ Overlay */
+  animation: modalFadeIn 0.25s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.15); /* إطار أبيض خفيف وراقي */
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* زر الإغلاق (X) */
+.close-modal-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+/* عناوين النموذج */
+.checkout-modal h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* تنسيق الحقول والشبكة */
+.form-grid {  
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #ffffff;
+  background-color: #1a1a1a; /* لون رمادي داكن للحقول يتناسب مع السواد */
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #ffffff; /* إطار أبيض نقي عند التركيز */
+  background-color: #222222;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* شارة تكلفة التوصيل بجانب الولاية */
+.shipping-badge-inline {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: auto;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* صندوق ملخص الأسعار */
+.checkout-summary-box {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+.summary-row.total-row {
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-top: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 1.05rem;
+}
+
+.accent-price {
+  color: #ffffff; /* لون السعر المميز أبيض صافي */
+  font-weight: 700;
+}
+
+/* زر تأكيد الطلب الأساسي */
+.confirm-order-btn,
+.primary-btn {
+  width: 100%;
+  background-color: #ffffff; /* زر أبيض صريح وفخم */
+  color: #000000;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-order-btn:hover,
+.primary-btn:hover {
+  background-color: #e0e0e0; /* لون أفتح قليلاً عند التحويم */
+}
+
+/* حالة النجاح وعلامة الصح */
+.success-state {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.success-icon {
+  color: #ffffff; /* أيقونة نجاح باللون الأبيض المتناسق */
+}
+
+.success-state h2 {
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+.success-state p {
+  color: #cccccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+
+}
+/* تخصيص شريط التمرير (Scrollbar) العام */
+::-webkit-scrollbar {
+  width: 8px; /* عرض شريط التمرير العمودي */
+  height: 8px; /* ارتفاع شريط التمرير الأفقي */
+}
+
+/* خلفية أو مسار شريط التمرير */
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+/* الجزء المتحرك من شريط التمرير */
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+/* لون الشريط عند وضع الماوس فوقه */
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

@@ -1,0 +1,126 @@
+.admin-login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0b0f17;
+  padding: 1rem;
+}
+
+.admin-login-card {
+  background-color: #121824;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2.5rem;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.admin-shield-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(225, 29, 72, 0.15);
+  color: #E11D48;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.admin-login-header h2 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.admin-login-header p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.admin-error-msg {
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid #E11D48;
+  color: #ff85a1;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-input-group {
+  margin-bottom: 1.25rem;
+}
+
+.admin-input-group label {
+  display: block;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 14px;
+  color: #64748b;
+}
+
+/* تعديل موضع الأيقونة حسب اللغة إن أردت، أو تركها ثابتة */
+[dir="rtl"] .input-with-icon svg {
+  left: auto;
+  right: 14px;
+}
+
+.input-with-icon input {
+  width: 100%;
+  background-color: #0b0f17;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+[dir="rtl"] .input-with-icon input {
+  padding: 0.75rem 2.75rem 0.75rem 1rem;
+}
+
+.input-with-icon input:focus {
+  border-color: #E11D48;
+}
+
+.admin-login-btn {
+  width: 100%;
+  background-color: #E11D48;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.admin-login-btn:hover {
+  background-color: #be123c;
+}

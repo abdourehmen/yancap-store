@@ -1,0 +1,307 @@
+.product-details-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85); /* خلفية سوداء شفافة فخمة */
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.product-details-modal {
+  background: #111111; /* خلفية النافذة سوداء داكنة وراقية */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* إطار أبيض خفيف وواضح */
+  border-radius: 1.25rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh; /* قللناها قليلاً لتترك مساحة كافية من الأعلى والأسفل */
+  margin-top: 60px; /* مسافة علوية تجبر المودال على النزول تحت الناف بار */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+  padding: 2rem;
+  color: #fff;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.close-modal-btn:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+/* شبكة مرنة تتكيف مع المحتوى */
+.product-details-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  /* أزلنا overflow-y: auto; لأنها هي سبب السكرول الداخلي */
+  overflow-y: visible; 
+  padding-right: 0;
+  flex: 1;
+  align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+  .product-details-grid {
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: visible; /* التأكد من عدم وجود سكرول على الجوال أيضاً */
+  }
+  .product-details-modal {
+    padding: 1.25rem;
+    max-height: 90vh; /* اجعل المودال نفسه قابلاً للتمرير العام إذا لزم الأمر، وليس محتوى الكارت من الداخل */
+    overflow-y: auto;  /* التمرير يكون للصفحة/المودال بالكامل وليس للجزء الداخلي فقط */
+  }
+}
+
+.product-gallery-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.main-preview-image-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.main-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #ffffff;
+  color: #000000;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.thumbnails-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* تعرض 3 صور في كل صف، ويمكنك تغيير الرقم حسب رغبتك */
+  gap: 0.5rem;          /* مسافة منتظمة بين الصور عمودياً وأفقياً */
+  width: 100%;
+  max-height: none;     /* إزالة أي حد أقصى للارتفاع */
+  overflow: visible;    /* منع ظهور أي شريط تمرير داخلي */
+}
+
+.thumb-btn {
+  width: 100%;          /* تأخذ عرض العمود بالكامل */
+  height: 60px;         /* ارتفاع ثابت ومناسب لكل صورة مصغرة */
+  border-radius: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.thumb-btn.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* لتعبئة المربع بشكل مرتب */
+}
+/* قسم المعلومات المرن */
+.product-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+
+.details-category {
+  display: inline-block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #cccccc;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.details-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* مؤشر المخزون وحالة التوفر */
+.stock-status, 
+.product-stock, 
+.inventory-status,
+.details-stock {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.details-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.details-current-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.details-current-price small {
+  font-size: 0.9rem;
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.details-old-price {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: line-through;
+}
+
+/* صندوق الوصف المرن مع إمكانية التمرير */
+.details-desc-box {
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  max-height: 140px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.details-desc-box h3 {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+
+.details-desc-box p {
+  color: #cccccc;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.details-actions {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.add-to-cart-main-btn {
+  width: 100%;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+}
+
+.add-to-cart-main-btn:hover {
+  background: #e0e0e0;
+}
+
+/* تصميم أزرار الأسهم الخاصة بمعرض الصور */
+.gallery-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.gallery-arrow-btn:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000000;
+}
+
+.prev-arrow {
+  left: 10px;
+}
+
+.next-arrow {
+  right: 10px;
+}
