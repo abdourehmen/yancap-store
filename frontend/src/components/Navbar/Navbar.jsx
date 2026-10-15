@@ -136,13 +136,22 @@ export default function Navbar({ lang, setLang, cartCount, currentView, setCurre
           >
             {isAr ? "التخفيضات" : "Sale"}
           </a>
+
+          {/* 🟢 رابط الحقائب المضاف حديثاً ليوجه إلى قسم #bags */}
+          <a 
+            href="#bags" 
+            className="nav-link"
+            onClick={(e) => scrollToSection('bags', e)}
+          >
+            {isAr ? "الحقائب" : "Bags"}
+          </a>
           
           <a 
             href="#products" 
             className="nav-link"
             onClick={(e) => scrollToSection('products', e)}
           >
-            {isAr ? "المنتجات اخرا" : "Products"}
+            {isAr ? "المنتجات الأخرى" : "Products"}
           </a>
         </nav>
 
@@ -217,9 +226,18 @@ export default function Navbar({ lang, setLang, cartCount, currentView, setCurre
             href="#sale" 
             className="mobile-nav-link"
             onClick={(e) => scrollToSection('sale', e)}
-            style={{ color: '#', fontWeight: 'bold' }}
+            style={{ fontWeight: 'bold' }}
           >
             {isAr ? "التخفيضات" : "Sale"}
+          </a>
+
+          {/* 🟢 رابط الحقائب المضاف حديثاً لقائمة الجوال */}
+          <a 
+            href="#bags" 
+            className="mobile-nav-link"
+            onClick={(e) => scrollToSection('bags', e)}
+          >
+            {isAr ? "الحقائب" : "Bags"}
           </a>
           
           <a 
@@ -227,7 +245,7 @@ export default function Navbar({ lang, setLang, cartCount, currentView, setCurre
             className="mobile-nav-link"
             onClick={(e) => scrollToSection('products', e)}
           >
-            {isAr ? "المنتجات اخرا" : "Products"}
+            {isAr ? "المنتجات الأخرى" : "Products"}
           </a>
 
           {/* زر سلة التسوق داخل قائمة الجوال مع عرض عدد المنتجات */}

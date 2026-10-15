@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
+  ShoppingBag,
   ShieldCheck, 
   ShoppingCart, 
   Package, 
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 import './AdminDashboard.css';
 import imageCompression from 'browser-image-compression'; // استيراد مكتبة الضغط
+import BagsAdmin from './BagsAdmin';
 
 export default function AdminDashboard({ lang = 'ar', supabaseClient }) {
   const isAr = lang === 'ar';
@@ -229,12 +231,13 @@ export default function AdminDashboard({ lang = 'ar', supabaseClient }) {
     const uploadedUrls = [];
     try {
       for (const file of files) {
+        // 🚀 تم تعديل إعدادات الضغط لرفع دقة ووضوح الصور (أبعاد حتى 1600 بكسل وجودة عالية)
         const options = {
-          maxSizeMB: 0.3,
-          maxWidthOrHeight: 800,
-          useWebWorker: true,
-          fileType: 'image/webp'
-        };
+  maxSizeMB: 1.0,          // السماح بحجم ملف يصل إلى 1 ميجابايت للحفاظ على تفاصيل الصورة
+  maxWidthOrHeight: 1600,  // رفع الأبعاد القصوى للصورة لتكون واضحة جداً في الشاشات الكبيرة والموبايل
+  useWebWorker: true,
+  fileType: 'image/webp'
+};
 
         const compressedFile = await imageCompression(file, options);
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}.webp`;
@@ -510,6 +513,13 @@ export default function AdminDashboard({ lang = 'ar', supabaseClient }) {
           >
             <Package size={16} />
             <span>{isAr ? `المنتجات (${products.length})` : `Products (${products.length})`}</span>
+          </button>
+          <button 
+            className={`admin-tab-btn ${activeTab === 'bags' ? 'active' : ''}`}
+            onClick={() => setActiveTab('bags')}
+          >
+            <ShoppingBag size={16} />
+            <span>{isAr ? "الحقائب" : "Bags"}</span>
           </button>
         </div>
       </div>
@@ -934,6 +944,15 @@ export default function AdminDashboard({ lang = 'ar', supabaseClient }) {
               </div>
             </div>
           </div>
+        )}
+
+        {activeTab === 'bags' && (
+          <BagsAdmin
+            lang={lang}
+            supabaseClient={supabaseClient}
+            showSuccess={showSuccess}
+            setConfirmModal={setConfirmModal}
+          />
         )}
       </div>
     </div>

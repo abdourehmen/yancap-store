@@ -32,8 +32,46 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
     return String(field);
   };
 
+  // تحويل أي قيمة (مصفوفة أو نص JSON) إلى مصفوفة
+  const toArray = (value) => {
+    if (Array.isArray(value)) return value;
+    if (typeof value === 'string' && value) {
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [value];
+      } catch (e) {
+        return [value];
+      }
+    }
+    return [];
+  };
+
+  // 👜 الحقائب: ألوان الحقيبة + صورها العامة (حتى 6)
+  const isBag = Boolean(product.isBag);
+  const colorsList = isBag && Array.isArray(product.colors) ? product.colors : [];
+
+  // شرائح معرض الحقيبة: صورة كل لون أولاً ثم الصور العامة
+  const buildBagSlides = () => {
+    const slides = [];
+    colorsList.forEach((c, i) => {
+      if (c.image) slides.push({ src: c.image, colorIndex: i });
+    });
+    toArray(product.images).forEach((src) => {
+      if (src && !slides.some((s) => s.src === src)) slides.push({ src, colorIndex: null });
+    });
+    if (slides.length === 0 && product.image) {
+      slides.push({ src: product.image, colorIndex: null });
+    }
+    return slides;
+  };
+
+  const bagSlides = isBag ? buildBagSlides() : [];
+
   // معالجة آمنة 100% لاستخراج الصور وتجنب خطأ .map is not a function
   const getImagesList = () => {
+    if (isBag && bagSlides.length > 0) {
+      return bagSlides.map((s) => s.src);
+    }
     if (!product.images) {
       return [product.image || 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500'];
     }
@@ -53,7 +91,20 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
 
   const imagesList = getImagesList();
 
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  // اللون الذي كان مختاراً في بطاقة الحقيبة
+  const initialColorIndex = (() => {
+    const i = Number(product.selectedColorIndex);
+    return colorsList.length > 0 && Number.isInteger(i) && i >= 0 && i < colorsList.length ? i : 0;
+  })();
+
+  const [selectedColorIndex, setSelectedColorIndex] = useState(initialColorIndex);
+  const [activeImageIndex, setActiveImageIndex] = useState(() => {
+    if (isBag && bagSlides.length > 0) {
+      const idx = bagSlides.findIndex((s) => s.colorIndex === initialColorIndex);
+      return idx >= 0 ? idx : 0;
+    }
+    return 0;
+  });
   const [isPaused, setIsPaused] = useState(false);
   
   // حالة حفظ المقاس المختار عبر الأزرار
@@ -61,25 +112,44 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
   // حالة لتتبع ما إذا حاول المستخدم الإضافة بدون إدخال المقاس لإظهار التحذير
   const [sizeError, setSizeError] = useState(false);
 
+  const selectedColor = colorsList.length > 0 ? colorsList[selectedColorIndex] : null;
+  const selectedColorName = selectedColor ? getLocalizedText(selectedColor.name) : '';
+
+  // الانتقال إلى صورة معينة (وإن كانت صورة لون نختار هذا اللون)
+  const goToSlide = (idx) => {
+    setActiveImageIndex(idx);
+    if (isBag && bagSlides[idx] && bagSlides[idx].colorIndex !== null) {
+      setSelectedColorIndex(bagSlides[idx].colorIndex);
+    }
+  };
+
+  // اختيار لون من الأزرار: ننتقل إلى صورته إن وُجدت
+  const handleSelectColor = (i) => {
+    setSelectedColorIndex(i);
+    const slideIdx = bagSlides.findIndex((s) => s.colorIndex === i);
+    if (slideIdx >= 0) setActiveImageIndex(slideIdx);
+  };
+
   const handlePrevImage = (e) => {
     e.stopPropagation();
-    setActiveImageIndex((prev) => (prev === 0 ? imagesList.length - 1 : prev - 1));
+    goToSlide(activeImageIndex === 0 ? imagesList.length - 1 : activeImageIndex - 1);
   };
 
   const handleNextImage = (e) => {
     e.stopPropagation();
-    setActiveImageIndex((prev) => (prev === imagesList.length - 1 ? 0 : prev + 1));
+    goToSlide(activeImageIndex === imagesList.length - 1 ? 0 : activeImageIndex + 1);
   };
 
   useEffect(() => {
-    if (imagesList.length <= 1 || isPaused) return;
+    // للحقائب نوقف التبديل التلقائي حتى لا يتغير اللون المختار وحده
+    if (isBag || imagesList.length <= 1 || isPaused) return;
 
     const interval = setInterval(() => {
       setActiveImageIndex((prev) => (prev === imagesList.length - 1 ? 0 : prev + 1));
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [imagesList.length, isPaused]);
+  }, [imagesList.length, isPaused, isBag]);
 
   // استخدام دالة الترجمة واستخراج النصوص بسلاسة
   const productName = getLocalizedText(product.name);
@@ -98,6 +168,28 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
   // دالة التعامل مع الإضافة للسلة مع شرط إلزاميّة المقاس
   const handleAddToCartClick = () => {
     if (isOutOfStock) return;
+
+    // 👜 حقيبة: كل لون سطر مستقل في السلة (رقم فريد لكل لون)
+    if (isBag && selectedColor) {
+      const { colors: _omitColors, ...productWithoutColors } = product;
+      const cartImage = selectedColor.image || imagesList[activeImageIndex] || product.image;
+      onAddToCart({
+        ...productWithoutColors,
+        id: `${product.id}-c${selectedColorIndex}`,
+        name: productName,
+        description: productDescription,
+        selectedColor: selectedColorName,
+        // نخزّن اللون في selectedSize أيضاً ليظهر تلقائياً في السلة وفي لوحة الطلبات
+        selectedSize: selectedColorName,
+        image: cartImage,
+        images: [cartImage],
+        price: finalPrice,
+        discountPrice: null,
+        activePrice: finalPrice
+      });
+      onClose();
+      return;
+    }
 
     // التحقق هل المنتج يحتوي على مقاسات ولم يتم اختيار أي مقاس
     if (product.sizes && product.sizes.trim() !== '' && !selectedSize) {
@@ -169,7 +261,7 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
                   <button 
                     key={idx} 
                     className={`thumb-btn ${activeImageIndex === idx ? 'active' : ''}`}
-                    onClick={() => setActiveImageIndex(idx)}
+                    onClick={() => goToSlide(idx)}
                   >
                     <img src={img} alt={`Thumb ${idx + 1}`} />
                   </button>
@@ -209,6 +301,52 @@ export default function ProductDetails({ product, lang, onClose, onAddToCart }) 
                 </span>
               )}
             </div>
+
+            {/* 👜 اختيار لون الحقيبة (يظهر للحقائب فقط) */}
+            {colorsList.length > 0 && (
+              <div className="product-colors-container" style={{ margin: '1rem 0' }}>
+                <label style={{ display: 'block', fontWeight: '600', fontSize: '0.95rem', color: '#fff', marginBottom: '8px' }}>
+                  {isAr ? "اللون:" : "Color:"}{' '}
+                  <strong style={{ color: '#E11D48' }}>{selectedColorName}</strong>
+                </label>
+
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {colorsList.map((c, i) => {
+                    const isActive = i === selectedColorIndex;
+                    return (
+                      <button
+                        type="button"
+                        key={i}
+                        onClick={() => handleSelectColor(i)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          padding: c.image ? '6px 12px 6px 6px' : '8px 16px',
+                          border: isActive ? '2px solid #E11D48' : '1px solid rgba(255, 255, 255, 0.2)',
+                          background: isActive ? '#FFF1F2' : '#222',
+                          color: isActive ? '#E11D48' : '#fff',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          fontWeight: '600',
+                          fontSize: '0.9rem',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        {c.image && (
+                          <img
+                            src={c.image}
+                            alt=""
+                            style={{ width: '32px', height: '32px', objectFit: 'cover', borderRadius: '6px' }}
+                          />
+                        )}
+                        <span>{getLocalizedText(c.name)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* 🚀 قسم أزرار المقاسات الاحترافية بدلاً من خانة الإدخال القديمة */}
             {product.sizes && product.sizes.trim() !== '' && (

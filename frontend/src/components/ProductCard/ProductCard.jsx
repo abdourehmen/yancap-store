@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ProductCard.css';
-import { ShoppingBag, Eye, ChevronLeft, ChevronRight, Flame, Clock, Zap, Tag } from 'lucide-react';
+import { Eye, ChevronLeft, ChevronRight, Flame, Clock, Tag, Zap } from 'lucide-react';
 
-export default function ProductCard({ product, lang, onAddToCart, onBuyNow, onViewDetails, isPopular, isNew, isSale }) {
+export default function ProductCard({ product, lang, onViewDetails, isPopular, isNew, isSale }) {
   const isAr = lang === 'ar';
 
   const parseJSONField = (field) => {
@@ -63,7 +63,6 @@ export default function ProductCard({ product, lang, onAddToCart, onBuyNow, onVi
     
   const finalPrice = hasDiscount ? salePrice : normalPrice;
 
-  // كائن المنتج المحدث الذي يحمل السعر المخفض ليتم تمريره عند العرض أو الشراء
   const productToSend = {
     ...product,
     price: finalPrice,
@@ -129,7 +128,6 @@ export default function ProductCard({ product, lang, onAddToCart, onBuyNow, onVi
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* شارة التخفيض الحمراء (تظهر فقط في قسم التخفيضات) */}
         {hasDiscount && (
           <div style={{
             position: 'absolute',
@@ -296,42 +294,17 @@ export default function ProductCard({ product, lang, onAddToCart, onBuyNow, onVi
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <button 
-              className="add-to-cart-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                
-                if (product.sizes && product.sizes.trim() !== '') {
-                  onViewDetails && onViewDetails(productToSend);
-                  return;
-                }
-
-                onAddToCart && onAddToCart(productToSend);
-
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
-              title={isAr ? "إضافة للسلة" : "Add to Cart"}
-            >
-              <ShoppingBag size={16} />
-              <span>{isAr ? "إضافة" : "Add"}</span>
-            </button>
-
-            <button 
-              className="buy-now-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onViewDetails && onViewDetails(productToSend);
-              }}
-              title={isAr ? "شراء" : "Buy"}
-            >
-              <Zap size={15} />
-              <span>{isAr ? "شراء" : "Buy"}</span>
-            </button>
-          </div>
+          <button 
+            className="buy-now-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onViewDetails && onViewDetails(productToSend);
+            }}
+            title={isAr ? "شراء" : "Buy"}
+          >
+            <Zap size={15} />
+            <span>{isAr ? "شراء" : "Buy"}</span>
+          </button>
         </div>
       </div>
     </div>

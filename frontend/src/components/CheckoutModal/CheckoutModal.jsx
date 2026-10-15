@@ -91,8 +91,11 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, totalPrice, 
       return;
     }
 
-    // 2. تحديث وخصم الكمية من المخزون لكل منتج في السلة
+       // 2. تحديث وخصم الكمية من المخزون
+    // 2-أ. القبعات: كل سطر في السلة منتج مستقل
     for (const item of cartItems) {
+      if (item.isBag) continue;
+
       const currentStock = Number(item.stock) || 0;
       const quantityToSubtract = Number(item.quantity) || 1; 
       const newStock = Math.max(0, currentStock - quantityToSubtract);
@@ -107,6 +110,27 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, totalPrice, 
       }
     }
 
+    // 2-ب. الحقائب: نجمع كميات ألوان الحقيبة الواحدة لأنها أسطر منفصلة في السلة
+    const bagTotals = {};
+    for (const item of cartItems) {
+      if (!item.isBag) continue;
+      if (!bagTotals[item.bagId]) {
+        bagTotals[item.bagId] = { stock: Number(item.stock) || 0, qty: 0 };
+      }
+      bagTotals[item.bagId].qty += Number(item.quantity) || 1;
+    }
+
+    for (const [bagId, info] of Object.entries(bagTotals)) {
+      const newStock = Math.max(0, info.stock - info.qty);
+      const { error: bagStockError } = await supabase
+        .from('bags')
+        .update({ stock: newStock })
+        .eq('id', bagId);
+
+      if (bagStockError) {
+        console.error(`Error updating stock for bag ${bagId}:`, bagStockError);
+      }
+    }
     setLoading(false);
     setOrderSubmitted(true);
     clearCart();

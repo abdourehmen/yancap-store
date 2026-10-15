@@ -18,6 +18,7 @@ import WhatsAppButton from "./components/WhatsAppButton/WhatsAppButton"; // 🟢
 
 
 function MainLayout() {
+  const [bags, setBags] = useState([]);
   const [showWelcome, setShowWelcome] = useState(true);
   const [lang, setLang] = useState('ar');
   const [activeSection, setActiveSection] = useState('hero');
@@ -114,7 +115,21 @@ function MainLayout() {
   useEffect(() => {
     fetchProducts();
     fetchOrders();
+    fetchBags();
   }, []);
+
+  const fetchBags = async () => {
+    const { data, error } = await supabase
+      .from('bags')
+      .select('*')
+      .order('id', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching bags:', error);
+    } else if (data) {
+      setBags(data);
+    }
+  };
 
   const fetchProducts = async () => {
     const { data, error } = await supabase
@@ -160,6 +175,7 @@ function MainLayout() {
         {isAdminLoggedIn ? (
           <AdminDashboard 
             products={products} 
+            bags={bags}
             setProducts={setProducts} 
             orders={orders} 
             setOrders={setOrders} 
@@ -251,6 +267,7 @@ function MainLayout() {
             <Home 
               lang={lang} 
               products={products}
+              bags={bags} 
               onAddToCart={addToCart} 
               onViewDetails={(productOrId) => {
                 const prod = typeof productOrId === 'object' 

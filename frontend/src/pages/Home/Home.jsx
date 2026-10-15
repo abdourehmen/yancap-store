@@ -2,9 +2,10 @@ import React from 'react';
 import './Home.css';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { Sparkles, Flame, Clock, Truck, ShieldCheck, Headphones, Tag } from 'lucide-react';
+import BagCard from '../../components/BagCard/BagCard';
+import { Sparkles, Flame, Clock, Truck, ShieldCheck, Headphones, Tag ,ShoppingBag } from 'lucide-react';
 
-export default function Home({ lang, products, onAddToCart, onViewDetails, onGoToReviews }) {
+export default function Home({ lang, products, bags = [], onAddToCart, onViewDetails, onGoToReviews }) {
   const isAr = lang === 'ar';
 
   const allProducts = products || [];
@@ -180,6 +181,37 @@ export default function Home({ lang, products, onAddToCart, onViewDetails, onGoT
           )}
         </div>
       </section>
+
+      {bags.length > 0 && (
+        <section id="bags" className="products-section">
+          <div className="products-container">
+            <div className="section-header">
+              <div className="section-badge">
+                <ShoppingBag size={16} />
+                <span>{isAr ? "حقائب" : "Bags"}</span>
+              </div>
+              <h2 className="section-title">
+                {isAr ? "تشكيلة الحقائب" : "Our Bags Collection"}
+              </h2>
+              <p className="section-subtitle">
+                {isAr
+                  ? "اكتشف أحدث الحقائب المتوفرة بعدة ألوان في متجر Yancap.dz"
+                  : "Explore our latest bags, available in several colors."}
+              </p>
+            </div>
+            <div className="products-grid">
+              {bags.map((bag) => (
+                <BagCard
+                  key={`bag-${bag.id}`}
+                  bag={bag}
+                  lang={lang}
+                  onViewDetails={onViewDetails}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* --- القسم الثالث: كافة المنتجات --- */}
       <section id="products" className="products-section">

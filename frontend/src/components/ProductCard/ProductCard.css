@@ -12,9 +12,6 @@
 
 .streetflex-product-card {
   animation: siteOpenFade 0.8s ease-out forwards;
-}
-
-.streetflex-product-card {
   background-color: #ffffff; /* خلفية بيضاء صافية ونظيفة للبطاقة */
   border: 1px solid rgba(0, 0, 0, 0.08); /* إطار أسود خفيف ونظيف */
   border-radius: 1rem;
@@ -34,27 +31,31 @@
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 340px; /* 👈 توسيع مساحة عرض الصورة لتظهر كاملة وواضحة بدون قص */
   overflow: hidden;
-  background-color: #f7f7f7; /* خلفية خفيفة جداً تحت الصورة */
+  background-color: #f8f9fa; /* خلفية ناعمة ونظيفة تبرز تفاصيل المنتج */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* 👈 إظهار الصورة كاملة 100% ضمن المساحة الواسعة الجديدة */
+  object-position: center center;
   transition: transform 0.5s ease;
 }
 
 .streetflex-product-card:hover .product-image {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 .product-badge {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #000000; /* شارة سوداء صريحة وبارزة */
+  background: #000000;
   color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 50px;
@@ -110,7 +111,7 @@
 
 .product-category {
   font-size: 0.75rem;
-  color: #666666; /* رمادي مريح للفئة */
+  color: #666666;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
@@ -120,7 +121,7 @@
 .product-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #000000; /* عنوان أسود صريح وواضح */
+  color: #000000;
   margin-bottom: 0.4rem;
   line-height: 1.3;
   display: -webkit-box;
@@ -129,7 +130,6 @@
   overflow: hidden;
 }
 
-/* مؤشر المخزون المضاف */
 .product-stock-indicator {
   font-size: 0.75rem;
   margin-bottom: 0.75rem;
@@ -137,16 +137,16 @@
 }
 
 .product-stock-indicator.in-stock {
-  color: #000000; /* أخضر واضح ومقروء للمتوفر */
+  color: #000000;
 }
 
 .product-stock-indicator.out-of-stock {
-  color: #c62828; /* أحمر واضح لنفاد الكمية */
+  color: #c62828;
 }
 
 .product-description {
   font-size: 0.85rem;
-  color: #555555; /* رمادي داكن مريح للقراءة */
+  color: #555555;
   line-height: 1.5;
   margin-bottom: 1.25rem;
   display: -webkit-box;
@@ -172,7 +172,7 @@
 .product-current-price {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #000000; /* السعر بالأسود البارز */
+  color: #000000;
 }
 
 .product-current-price small {
@@ -186,25 +186,11 @@
   text-decoration: line-through;
 }
 
-.add-to-cart-btn {
+.buy-now-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background-color: #000000; /* زر إضافة للسلة باللون الأسود الفخم */
-  color: #ffffff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
-}
-.buy-now-btn{
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background-color: #000000; /* زر إضافة للسلة باللون الأسود الفخم */
+  background-color: #000000;
   color: #ffffff;
   border: none;
   padding: 0.5rem 1rem;
@@ -215,7 +201,7 @@
   transition: background-color 0.2s, transform 0.2s;
 }
 
-.add-to-cart-btn:hover {
+.buy-now-btn:hover {
   background-color: #333333;
   transform: translateY(-1px);
 }
@@ -256,21 +242,4 @@
 
 .card-next-arrow {
   right: 10px !important;
-}
-
-/* أنيميشن نزول وظهور تلقائي مباشر لكل كارد عند ظهوره في الصفحة */
-.streetflex-product-card {
-  animation: cardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-
-@keyframes cardEntrance {
-  0% {
-    opacity: 0;
-    transform: translateY(40px) scale(0.96);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
