@@ -89,13 +89,11 @@ export default function ProductCard({ product, lang, onViewDetails, isPopular, i
   const descObj = parseJSONField(product.description);
   let productDescription = '';
   if (typeof descObj === 'object' && descObj !== null) {
-    productDescription = descObj[lang] || descObj.ar || descObj.en || '';
+    // جلب الوصف حسب اللغة حصراً، بدون جلب لغات أخرى افتراضياً
+    productDescription = descObj[lang] || '';
   } else {
-    if (!isAr) {
-      productDescription = "Official FIFTY cap. Look sharp with luxury streetwear featuring the New Era 50 cap for Los Angeles Dodgers. This premium cap features a classic design.";
-    } else {
-      productDescription = descObj;
-    }
+    // إذا لم يكن كائناً، نعرضه فقط إذا كانت اللغة العربية أو إذا لم يكن نصاً إنجليزياً وهمياً
+    productDescription = isAr ? descObj : '';
   }
   
   const productStock = product.stock !== undefined ? product.stock : 0;

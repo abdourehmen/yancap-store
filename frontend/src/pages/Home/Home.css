@@ -60,7 +60,7 @@
   line-height: 1.6;
 }
 
-/* تخطيط شبكة المنتجات المحسن */
+/* تخطيط شبكة المنتجات للشاشات الكبيرة (وضعها الطبيعي) */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -78,9 +78,10 @@
   .section-title {
     font-size: 1.85rem;
   }
+  /* 👈 فرض ظهور منتجين (2 أعمدة) في كل سطر على الهواتف والشاشات الصغيرة فقط */
   .products-grid {
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 

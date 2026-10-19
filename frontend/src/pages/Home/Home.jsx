@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 import HeroSection from '../../components/HeroSection/HeroSection';
 import ProductCard from '../../components/ProductCard/ProductCard';
@@ -10,15 +10,37 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
 
   const allProducts = products || [];
 
+  // تحديد العدد الابتدائي بناءً على حجم الشاشة (6 للكمبيوتر، 4 للجوال)
+  const getInitialLimit = () => (window.innerWidth <= 768 ? 4 : 6);
+
+  const [popularLimit, setPopularLimit] = useState(getInitialLimit);
+  const [saleLimit, setSaleLimit] = useState(getInitialLimit);
+  const [allProductsLimit, setAllProductsLimit] = useState(getInitialLimit);
+  const [bagsLimit, setBagsLimit] = useState(getInitialLimit);
+  const [defaultLimit, setDefaultLimit] = useState(getInitialLimit);
+
+  // تحديث الحد الافتراضي عند تغيير حجم النافذة بين الجوال والكمبيوتر
+  useEffect(() => {
+    const handleResize = () => {
+      const newLimit = window.innerWidth <= 768 ? 4 : 6;
+      setDefaultLimit(newLimit);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const popularProducts = allProducts.filter(p => p.is_featured === true || p.popular === true);
-  const displayPopular = popularProducts; 
+  const displayPopular = popularProducts.slice(0, popularLimit); 
 
   const newProducts = [...allProducts]
     .sort((a, b) => new Date(b.created_at || b.id) - new Date(a.created_at || a.id))
-    .slice(0, 4);
+    .slice(0, defaultLimit);
 
-  // التصفية بناءً على خاصية is_sale (مع دعم الطرق الأخرى كاحتياط)
   const saleProducts = allProducts.filter(p => p.is_sale === true || p.sale_price || p.discount || (p.old_price && p.old_price > p.price));
+  const displaySale = saleProducts.slice(0, saleLimit);
+
+  const displayAllProducts = allProducts.slice(0, allProductsLimit);
+  const displayBags = bags.slice(0, bagsLimit);
 
   return (
     <div id="hero" className="home-page">
@@ -77,23 +99,64 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
             <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
               {isAr ? "جاري تحميل المنتجات..." : "Loading products..."}
             </div>
-          ) : displayPopular.length === 0 ? (
+          ) : popularProducts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
               {isAr ? "لا توجد منتجات في قسم الأكثر طلباً حالياً" : "No popular products at the moment"}
             </div>
           ) : (
-            <div className="products-grid">
-              {displayPopular.map((product) => (
-                <ProductCard 
-                  key={`pop-${product.id}`}
-                  product={product}
-                  lang={lang}
-                  onAddToCart={onAddToCart}
-                  onViewDetails={onViewDetails}
-                  isPopular={true} 
-                />
-              ))}
-            </div>
+            <>
+              <div className="products-grid">
+                {displayPopular.map((product) => (
+                  <ProductCard 
+                    key={`pop-${product.id}`}
+                    product={product}
+                    lang={lang}
+                    onAddToCart={onAddToCart}
+                    onViewDetails={onViewDetails}
+                    isPopular={true} 
+                  />
+                ))}
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                {popularLimit < popularProducts.length && (
+                  <button 
+                    onClick={() => setPopularLimit(prev => prev + defaultLimit)}
+                    style={{
+                      background: '#ffffff',
+                      color: '#000000',
+                      border: 'none',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض المزيد من المنتجات" : "View More Products"}
+                  </button>
+                )}
+                {popularLimit > defaultLimit && (
+                  <button 
+                    onClick={() => setPopularLimit(defaultLimit)}
+                    style={{
+                      background: '#1a1a1a',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض أقل" : "Show Less"}
+                  </button>
+                )}
+              </div>
+            </>
           )}
         </div>
       </section>
@@ -126,18 +189,59 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
               {isAr ? "لا توجد تخفيضات حالياً، ترقبوا العروض القادمة!" : "No active sales at the moment"}
             </div>
           ) : (
-            <div className="products-grid">
-              {saleProducts.map((product) => (
-                <ProductCard 
-                  key={`sale-${product.id}`}
-                  product={product}
-                  lang={lang}
-                  onAddToCart={onAddToCart}
-                  onViewDetails={onViewDetails}
-                  isSale={true}
-                />
-              ))}
-            </div>
+            <>
+              <div className="products-grid">
+                {displaySale.map((product) => (
+                  <ProductCard 
+                    key={`sale-${product.id}`}
+                    product={product}
+                    lang={lang}
+                    onAddToCart={onAddToCart}
+                    onViewDetails={onViewDetails}
+                    isSale={true}
+                  />
+                ))}
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                {saleLimit < saleProducts.length && (
+                  <button 
+                    onClick={() => setSaleLimit(prev => prev + defaultLimit)}
+                    style={{
+                      background: '#ffffff',
+                      color: '#000000',
+                      border: 'none',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض المزيد من المنتجات" : "View More Products"}
+                  </button>
+                )}
+                {saleLimit > defaultLimit && (
+                  <button 
+                    onClick={() => setSaleLimit(defaultLimit)}
+                    style={{
+                      background: '#1a1a1a',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض أقل" : "Show Less"}
+                  </button>
+                )}
+              </div>
+            </>
           )}
         </div>
       </section>
@@ -183,7 +287,7 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
       </section>
 
       {bags.length > 0 && (
-        <section id="bags" className="products-section">
+        <section id="bags" className="products-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
           <div className="products-container">
             <div className="section-header">
               <div className="section-badge">
@@ -200,7 +304,7 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
               </p>
             </div>
             <div className="products-grid">
-              {bags.map((bag) => (
+              {displayBags.map((bag) => (
                 <BagCard
                   key={`bag-${bag.id}`}
                   bag={bag}
@@ -208,6 +312,45 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
                   onViewDetails={onViewDetails}
                 />
               ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              {bagsLimit < bags.length && (
+                <button 
+                  onClick={() => setBagsLimit(prev => prev + defaultLimit)}
+                  style={{
+                    background: '#ffffff',
+                    color: '#000000',
+                    border: 'none',
+                    padding: '12px 32px',
+                    borderRadius: '8px',
+                    fontWeight: '700',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {isAr ? "عرض المزيد من الحقائب" : "View More Bags"}
+                </button>
+              )}
+              {bagsLimit > defaultLimit && (
+                <button 
+                  onClick={() => setBagsLimit(defaultLimit)}
+                  style={{
+                    background: '#1a1a1a',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    padding: '12px 32px',
+                    borderRadius: '8px',
+                    fontWeight: '700',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {isAr ? "عرض أقل" : "Show Less"}
+                </button>
+              )}
             </div>
           </div>
         </section>
@@ -237,17 +380,58 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
               {isAr ? "جاري تحميل المنتجات أو لا توجد منتجات مضافة حالياً..." : "Loading products or no products available..."}
             </div>
           ) : (
-            <div className="products-grid">
-              {allProducts.map((product) => (
-                <ProductCard 
-                  key={`all-${product.id}`}
-                  product={product}
-                  lang={lang}
-                  onAddToCart={onAddToCart}
-                  onViewDetails={onViewDetails}
-                />
-              ))}
-            </div>
+            <>
+              <div className="products-grid">
+                {displayAllProducts.map((product) => (
+                  <ProductCard 
+                    key={`all-${product.id}`}
+                    product={product}
+                    lang={lang}
+                    onAddToCart={onAddToCart}
+                    onViewDetails={onViewDetails}
+                  />
+                ))}
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '2.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                {allProductsLimit < allProducts.length && (
+                  <button 
+                    onClick={() => setAllProductsLimit(prev => prev + defaultLimit)}
+                    style={{
+                      background: '#ffffff',
+                      color: '#000000',
+                      border: 'none',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض المزيد من المنتجات" : "View More Products"}
+                  </button>
+                )}
+                {allProductsLimit > defaultLimit && (
+                  <button 
+                    onClick={() => setAllProductsLimit(defaultLimit)}
+                    style={{
+                      background: '#1a1a1a',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      padding: '12px 32px',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isAr ? "عرض أقل" : "Show Less"}
+                  </button>
+                )}
+              </div>
+            </>
           )}
         </div>
       </section>
