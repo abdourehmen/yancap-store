@@ -1,6 +1,6 @@
 import React from 'react';
 import './HeroSection.css';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ArrowDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function HeroSection({ lang }) {
@@ -10,6 +10,7 @@ export default function HeroSection({ lang }) {
       titleLine1: "Best Quality",
       titleAccent: "Best Price.",
       description: "Discover the exclusive and luxury collection of caps, choose the cap that suits you, and order it now With Yancap.dz",
+      shopBtn: "Shop Products",
       floatingTitle: "Yancap.dz"
     },
     ar: {
@@ -17,11 +18,20 @@ export default function HeroSection({ lang }) {
       titleLine1: "أفضل جودة",
       titleAccent: "أفضل سعر.",
       description: "اكتشف تشكيلة القبعات الحصرية والفخمة واختر القبعة التي تناسبك واطلبها الآن بكل سهولة مع Yancap.dz",
+      shopBtn: "تسوق المنتجات",
       floatingTitle: "Yancap.dz"
     }
   };
 
   const t = content[lang] || content.en;
+
+  const scrollToPopular = () => {
+    // 👈 التمرير بسلاسة إلى قسم الأكثر طلباً
+    const element = document.getElementById('popular');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="streetflex-hero">
@@ -58,6 +68,36 @@ export default function HeroSection({ lang }) {
           >
             {t.description}
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
+            style={{ marginTop: '1.5rem' }}
+          >
+            <button 
+              onClick={scrollToPopular}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: '#ffffff',
+                color: '#000000',
+                border: 'none',
+                padding: '14px 32px',
+                borderRadius: '8px',
+                fontWeight: '700',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(255, 255, 255, 0.25)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <span>{t.shopBtn}</span>
+              <ArrowDown size={18} />
+            </button>
+          </motion.div>
+
         </div>
 
       </div>
