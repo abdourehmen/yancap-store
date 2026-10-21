@@ -42,6 +42,23 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
   const displayAllProducts = allProducts.slice(0, allProductsLimit);
   const displayBags = bags.slice(0, bagsLimit);
 
+  // تنسيق موحد للشارات مع تأثير الهوفر والتكبير
+  const badgeStyle = {
+    background: 'rgba(225, 29, 72, 0.15)',
+    color: '#E11D48',
+    padding: '10px 22px',
+    borderRadius: '50px',
+    fontSize: '1.05rem',
+    fontWeight: '700',
+    border: '1px solid rgba(225, 29, 72, 0.35)',
+    boxShadow: '0 4px 20px rgba(225, 29, 72, 0.25)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  };
+
   return (
     <div id="hero" className="home-page">
       <HeroSection lang={lang} onGoToReviews={onGoToReviews} />
@@ -80,8 +97,21 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
       <section id="popular" className="products-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="products-container">
           <div className="section-header">
-            <div className="section-badge">
-              <Flame size={16} />
+            <div 
+              className="section-badge" 
+              style={badgeStyle}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.25)';
+                e.currentTarget.style.boxShadow = '0 6px 25px rgba(225, 29, 72, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.15)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(225, 29, 72, 0.25)';
+              }}
+            >
+              <Flame size={20} />
               <span>{isAr ? "الأكثر طلباً" : "Most Popular"}</span>
             </div>
             <h2 className="section-title">
@@ -165,8 +195,21 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
       <section id="sale" className="products-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="products-container">
           <div className="section-header">
-            <div className="section-badge" style={{ background: 'rgba(225, 29, 72, 0.15)', color: '#E11D48' }}>
-              <Tag size={16} />
+            <div 
+              className="section-badge" 
+              style={badgeStyle}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.25)';
+                e.currentTarget.style.boxShadow = '0 6px 25px rgba(225, 29, 72, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.15)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(225, 29, 72, 0.25)';
+              }}
+            >
+              <Tag size={20} />
               <span>{isAr ? "تخفيضات حصرية" : "Special Sale"}</span>
             </div>
             <h2 className="section-title">
@@ -250,8 +293,21 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
       <section id="new" className="products-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="products-container">
           <div className="section-header">
-            <div className="section-badge">
-              <Clock size={16} />
+            <div 
+              className="section-badge" 
+              style={badgeStyle}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.25)';
+                e.currentTarget.style.boxShadow = '0 6px 25px rgba(225, 29, 72, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.15)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(225, 29, 72, 0.25)';
+              }}
+            >
+              <Clock size={20} />
               <span>{isAr ? "وصول حديث" : "New Arrivals"}</span>
             </div>
             <h2 className="section-title">
@@ -290,8 +346,21 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
         <section id="bags" className="products-section" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
           <div className="products-container">
             <div className="section-header">
-              <div className="section-badge">
-                <ShoppingBag size={16} />
+              <div 
+                className="section-badge" 
+                style={badgeStyle}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
+                  e.currentTarget.style.background = 'rgba(225, 29, 72, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 6px 25px rgba(225, 29, 72, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.background = 'rgba(225, 29, 72, 0.15)';
+                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(225, 29, 72, 0.25)';
+                }}
+              >
+                <ShoppingBag size={20} />
                 <span>{isAr ? "حقائب" : "Bags"}</span>
               </div>
               <h2 className="section-title">
@@ -360,8 +429,21 @@ export default function Home({ lang, products, bags = [], onAddToCart, onViewDet
       <section id="products" className="products-section">
         <div className="products-container">
           <div className="section-header">
-            <div className="section-badge">
-              <Sparkles size={16} />
+            <div 
+              className="section-badge" 
+              style={badgeStyle}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.03)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.25)';
+                e.currentTarget.style.boxShadow = '0 6px 25px rgba(225, 29, 72, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.background = 'rgba(225, 29, 72, 0.15)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(225, 29, 72, 0.25)';
+              }}
+            >
+              <Sparkles size={20} />
               <span>{isAr ? "تشكيلة مميزة" : "Featured Collection"}</span>
             </div>
             <h2 className="section-title">
